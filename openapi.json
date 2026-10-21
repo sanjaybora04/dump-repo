@@ -1,49 +1,176 @@
 {
   "openapi": "3.0.2",
   "paths": {
-    "/api/blogs": {
+    "/api/auth/signin-google": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "operationId": "auth.googleSignin",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "token"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/signin-email": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "operationId": "auth.emailSignin",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "otp": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email",
+                  "otp"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/send-otp": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "operationId": "auth.sendEmailOtp",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "expiresAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "expiresAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/log-out": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "parameters": [],
+        "operationId": "auth.logOut",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users": {
       "get": {
         "tags": [
-          "blogs"
+          "users"
         ],
         "parameters": [
           {
-            "name": "country",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "state",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "categories",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "authorId",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "published",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "search",
+            "name": "role",
             "in": "query",
             "schema": {
               "type": "string"
@@ -76,9 +203,16 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
-        "operationId": "blogs.getAll",
+        "operationId": "users.getAll",
         "responses": {
           "200": {
             "description": "200",
@@ -95,53 +229,57 @@
                       "items": {
                         "type": "object",
                         "properties": {
-                          "title": {
+                          "id": {
                             "type": "string"
                           },
-                          "thumbnail": {
+                          "email": {
                             "type": "string"
                           },
-                          "description": {
+                          "name": {
                             "type": "string"
                           },
-                          "categories": {
+                          "dateOfBirth": {
+                            "type": "string"
+                          },
+                          "gender": {
+                            "type": "string"
+                          },
+                          "languages": {
                             "type": "array",
                             "items": {
                               "type": "string"
                             }
                           },
-                          "slug": {
+                          "address": {
                             "type": "string"
                           },
-                          "content": {
-                            "type": "string"
+                          "roles": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           },
-                          "authorId": {
-                            "type": "string"
-                          },
-                          "id": {
-                            "type": "string"
-                          },
-                          "published": {
-                            "type": "boolean"
-                          },
-                          "author": {
+                          "centerAdmin": {
                             "type": "object",
                             "properties": {
-                              "id": {
-                                "type": "string"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "email": {
-                                "type": "string"
+                              "centers": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "id"
+                                  ],
+                                  "additionalProperties": false
+                                }
                               }
                             },
                             "required": [
-                              "id",
-                              "name",
-                              "email"
+                              "centers"
                             ],
                             "additionalProperties": false
                           },
@@ -150,34 +288,13 @@
                           },
                           "updatedAt": {
                             "type": "string"
-                          },
-                          "thumbnailAlt": {
-                            "type": "string"
-                          },
-                          "focusKeyphrase": {
-                            "type": "string"
-                          },
-                          "country": {
-                            "type": "string"
-                          },
-                          "state": {
-                            "type": "string"
-                          },
-                          "jsonLdSchema": {
-                            "type": "string"
                           }
                         },
                         "required": [
-                          "title",
-                          "thumbnail",
-                          "description",
-                          "categories",
-                          "slug",
-                          "content",
-                          "authorId",
                           "id",
-                          "published",
-                          "author",
+                          "email",
+                          "name",
+                          "roles",
                           "createdAt",
                           "updatedAt"
                         ],
@@ -195,113 +312,15 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "blogs"
-        ],
-        "parameters": [],
-        "operationId": "blogs.create",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "thumbnail": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "thumbnailAlt": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string",
-                    "minLength": 100,
-                    "maxLength": 200
-                  },
-                  "focusKeyphrase": {
-                    "type": "string"
-                  },
-                  "categories": {
-                    "minItems": 1,
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "country": {
-                    "type": "string"
-                  },
-                  "state": {
-                    "type": "string"
-                  },
-                  "slug": {
-                    "type": "string",
-                    "minLength": 1,
-                    "pattern": "^[a-z0-9-_]+$"
-                  },
-                  "content": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "authorId": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "jsonLdSchema": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "title",
-                  "thumbnail",
-                  "description",
-                  "categories",
-                  "slug",
-                  "content",
-                  "authorId"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/api/blogs/{slug}": {
+    "/api/users/me": {
       "get": {
         "tags": [
-          "blogs"
+          "users"
         ],
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "blogs.getBySlug",
+        "parameters": [],
+        "operationId": "users.getMyProfile",
         "responses": {
           "200": {
             "description": "200",
@@ -310,53 +329,57 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "title": {
+                    "id": {
                       "type": "string"
                     },
-                    "thumbnail": {
+                    "email": {
                       "type": "string"
                     },
-                    "description": {
+                    "name": {
                       "type": "string"
                     },
-                    "categories": {
+                    "dateOfBirth": {
+                      "type": "string"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "languages": {
                       "type": "array",
                       "items": {
                         "type": "string"
                       }
                     },
-                    "slug": {
+                    "address": {
                       "type": "string"
                     },
-                    "content": {
-                      "type": "string"
+                    "roles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
                     },
-                    "authorId": {
-                      "type": "string"
-                    },
-                    "id": {
-                      "type": "string"
-                    },
-                    "published": {
-                      "type": "boolean"
-                    },
-                    "author": {
+                    "centerAdmin": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "name": {
-                          "type": "string"
-                        },
-                        "email": {
-                          "type": "string"
+                        "centers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id"
+                            ],
+                            "additionalProperties": false
+                          }
                         }
                       },
                       "required": [
-                        "id",
-                        "name",
-                        "email"
+                        "centers"
                       ],
                       "additionalProperties": false
                     },
@@ -365,34 +388,13 @@
                     },
                     "updatedAt": {
                       "type": "string"
-                    },
-                    "thumbnailAlt": {
-                      "type": "string"
-                    },
-                    "focusKeyphrase": {
-                      "type": "string"
-                    },
-                    "country": {
-                      "type": "string"
-                    },
-                    "state": {
-                      "type": "string"
-                    },
-                    "jsonLdSchema": {
-                      "type": "string"
                     }
                   },
                   "required": [
-                    "title",
-                    "thumbnail",
-                    "description",
-                    "categories",
-                    "slug",
-                    "content",
-                    "authorId",
                     "id",
-                    "published",
-                    "author",
+                    "email",
+                    "name",
+                    "roles",
                     "createdAt",
                     "updatedAt"
                   ],
@@ -402,14 +404,16 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/users/{id}": {
       "put": {
         "tags": [
-          "blogs"
+          "users"
         ],
         "parameters": [
           {
-            "name": "slug",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -417,7 +421,7 @@
             }
           }
         ],
-        "operationId": "blogs.update",
+        "operationId": "users.update",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -425,63 +429,37 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "title": {
+                  "name": {
                     "type": "string",
                     "minLength": 1
                   },
-                  "thumbnail": {
+                  "dateOfBirth": {
+                    "type": "string"
+                  },
+                  "gender": {
+                    "type": "string",
+                    "enum": [
+                      "Male",
+                      "Female"
+                    ]
+                  },
+                  "address": {
                     "type": "string",
                     "minLength": 1
                   },
-                  "thumbnailAlt": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string",
-                    "minLength": 100,
-                    "maxLength": 200
-                  },
-                  "focusKeyphrase": {
-                    "type": "string"
-                  },
-                  "categories": {
-                    "minItems": 1,
+                  "languages": {
                     "type": "array",
                     "items": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "English",
+                        "Hindi"
+                      ]
                     }
-                  },
-                  "country": {
-                    "type": "string"
-                  },
-                  "state": {
-                    "type": "string"
-                  },
-                  "slug": {
-                    "type": "string",
-                    "minLength": 1,
-                    "pattern": "^[a-z0-9-_]+$"
-                  },
-                  "content": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "authorId": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "jsonLdSchema": {
-                    "type": "string"
                   }
                 },
                 "required": [
-                  "title",
-                  "thumbnail",
-                  "description",
-                  "categories",
-                  "slug",
-                  "content",
-                  "authorId"
+                  "name"
                 ],
                 "additionalProperties": false
               }
@@ -500,44 +478,16 @@
             }
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "blogs"
-        ],
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "blogs.delete",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
       }
     },
-    "/api/blogs/{slug}/publish": {
+    "/api/users/{id}/update-roles": {
       "patch": {
         "tags": [
-          "blogs"
+          "users"
         ],
         "parameters": [
           {
-            "name": "slug",
+            "name": "id",
             "in": "path",
             "required": true,
             "schema": {
@@ -545,50 +495,26 @@
             }
           }
         ],
-        "operationId": "blogs.publish",
+        "operationId": "users.updateRoles",
         "requestBody": {
           "description": "Body",
           "content": {
             "application/json": {
-              "schema": {}
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "roles": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "roles"
+                ],
+                "additionalProperties": false
               }
-            }
-          }
-        }
-      }
-    },
-    "/api/blogs/{slug}/unpublish": {
-      "patch": {
-        "tags": [
-          "blogs"
-        ],
-        "parameters": [
-          {
-            "name": "slug",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "blogs.unpublish",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
             }
           }
         },
@@ -1443,6 +1369,125 @@
             "application/json": {
               "schema": {
                 "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experts/availabilities/add": {
+      "post": {
+        "tags": [
+          "expertAvailability"
+        ],
+        "parameters": [],
+        "operationId": "expertAvailability.add",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "ONLINE",
+                      "OFFLINE"
+                    ]
+                  },
+                  "from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                  },
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "mode",
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experts/availabilities/remove": {
+      "post": {
+        "tags": [
+          "expertAvailability"
+        ],
+        "parameters": [],
+        "operationId": "expertAvailability.remove",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "ONLINE",
+                      "OFFLINE"
+                    ]
+                  },
+                  "from": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                  },
+                  "to": {
+                    "type": "string",
+                    "format": "date-time",
+                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
+                  },
+                  "roomId": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
               }
             }
           }
@@ -2929,375 +2974,6 @@
         }
       }
     },
-    "/api/users": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "name": "role",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "sortBy",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sortOrder",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "search",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "users.getAll",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "count": {
-                      "type": "number"
-                    },
-                    "values": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "email": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "dateOfBirth": {
-                            "type": "string"
-                          },
-                          "gender": {
-                            "type": "string"
-                          },
-                          "languages": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "address": {
-                            "type": "string"
-                          },
-                          "roles": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          },
-                          "centerAdmin": {
-                            "type": "object",
-                            "properties": {
-                              "centers": {
-                                "type": "array",
-                                "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "id": {
-                                      "type": "string"
-                                    }
-                                  },
-                                  "required": [
-                                    "id"
-                                  ],
-                                  "additionalProperties": false
-                                }
-                              }
-                            },
-                            "required": [
-                              "centers"
-                            ],
-                            "additionalProperties": false
-                          },
-                          "createdAt": {
-                            "type": "string"
-                          },
-                          "updatedAt": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "id",
-                          "email",
-                          "name",
-                          "roles",
-                          "createdAt",
-                          "updatedAt"
-                        ],
-                        "additionalProperties": false
-                      }
-                    }
-                  },
-                  "required": [
-                    "count",
-                    "values"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/users/me": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "parameters": [],
-        "operationId": "users.getMyProfile",
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "dateOfBirth": {
-                      "type": "string"
-                    },
-                    "gender": {
-                      "type": "string"
-                    },
-                    "languages": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "address": {
-                      "type": "string"
-                    },
-                    "roles": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "centerAdmin": {
-                      "type": "object",
-                      "properties": {
-                        "centers": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "string"
-                              }
-                            },
-                            "required": [
-                              "id"
-                            ],
-                            "additionalProperties": false
-                          }
-                        }
-                      },
-                      "required": [
-                        "centers"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "createdAt": {
-                      "type": "string"
-                    },
-                    "updatedAt": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "id",
-                    "email",
-                    "name",
-                    "roles",
-                    "createdAt",
-                    "updatedAt"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/users/{id}": {
-      "put": {
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "users.update",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "dateOfBirth": {
-                    "type": "string"
-                  },
-                  "gender": {
-                    "type": "string",
-                    "enum": [
-                      "Male",
-                      "Female"
-                    ]
-                  },
-                  "address": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "languages": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "enum": [
-                        "English",
-                        "Hindi"
-                      ]
-                    }
-                  }
-                },
-                "required": [
-                  "name"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/users/{id}/update-roles": {
-      "patch": {
-        "tags": [
-          "users"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "operationId": "users.updateRoles",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "roles": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "required": [
-                  "roles"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/programs": {
       "get": {
         "tags": [
@@ -3914,6 +3590,7 @@
                       "address": {
                         "type": "string"
                       },
+    
                       "longitude": {
                         "type": "string"
                       },
@@ -5403,262 +5080,6 @@
         }
       }
     },
-    "/api/auth/signin-google": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "parameters": [],
-        "operationId": "auth.googleSignin",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "token": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "token"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/signin-email": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "parameters": [],
-        "operationId": "auth.emailSignin",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  },
-                  "otp": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "email",
-                  "otp"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/send-otp": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "parameters": [],
-        "operationId": "auth.sendEmailOtp",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "email"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "expiresAt": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "expiresAt"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/log-out": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "parameters": [],
-        "operationId": "auth.logOut",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {}
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/case-studies": {
-      "post": {
-        "tags": [
-          "caseStudy"
-        ],
-        "parameters": [],
-        "operationId": "caseStudy.create",
-        "requestBody": {
-          "description": "Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "case topic": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "client situation": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "symptoms and challenges": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "age group/life stage": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "impact on daily life": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "therapist observation": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "Root cause or underlying pattern": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "what helped most": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "common mistakes people make": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "therapist advice": {
-                    "type": "string",
-                    "minLength": 1
-                  },
-                  "therapist note (optional)": {
-                    "type": "string"
-                  },
-                  "clients location": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "required": [
-                  "case topic",
-                  "client situation",
-                  "symptoms and challenges",
-                  "age group/life stage",
-                  "impact on daily life",
-                  "therapist observation",
-                  "Root cause or underlying pattern",
-                  "what helped most",
-                  "common mistakes people make",
-                  "therapist advice",
-                  "clients location"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "200",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "nullable": true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/experts/availabilities": {
       "get": {
         "tags": [
@@ -6020,13 +5441,207 @@
         }
       }
     },
-    "/api/experts/availabilities/add": {
+    "/api/blogs": {
+      "get": {
+        "tags": [
+          "blogs"
+        ],
+        "parameters": [
+          {
+            "name": "country",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categories",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "authorId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "published",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "blogs.getAll",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "count": {
+                      "type": "number"
+                    },
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "title": {
+                            "type": "string"
+                          },
+                          "thumbnail": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "categories": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "content": {
+                            "type": "string"
+                          },
+                          "authorId": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "published": {
+                            "type": "boolean"
+                          },
+                          "author": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "email": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "email"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          },
+                          "thumbnailAlt": {
+                            "type": "string"
+                          },
+                          "focusKeyphrase": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "jsonLdSchema": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "title",
+                          "thumbnail",
+                          "description",
+                          "categories",
+                          "slug",
+                          "content",
+                          "authorId",
+                          "id",
+                          "published",
+                          "author",
+                          "createdAt",
+                          "updatedAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "count",
+                    "values"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": [
-          "expertAvailability"
+          "blogs"
         ],
         "parameters": [],
-        "operationId": "expertAvailability.add",
+        "operationId": "blogs.create",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -6034,32 +5649,63 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "mode": {
-                    "type": "string",
-                    "enum": [
-                      "ONLINE",
-                      "OFFLINE"
-                    ]
-                  },
-                  "from": {
-                    "type": "string",
-                    "format": "date-time",
-                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
-                  },
-                  "to": {
-                    "type": "string",
-                    "format": "date-time",
-                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
-                  },
-                  "roomId": {
+                  "title": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "thumbnailAlt": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 100,
+                    "maxLength": 200
+                  },
+                  "focusKeyphrase": {
+                    "type": "string"
+                  },
+                  "categories": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-z0-9-_]+$"
+                  },
+                  "content": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "authorId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "jsonLdSchema": {
+                    "type": "string"
                   }
                 },
                 "required": [
-                  "mode",
-                  "from",
-                  "to"
+                  "title",
+                  "thumbnail",
+                  "description",
+                  "categories",
+                  "slug",
+                  "content",
+                  "authorId"
                 ],
                 "additionalProperties": false
               }
@@ -6080,13 +5726,138 @@
         }
       }
     },
-    "/api/experts/availabilities/remove": {
-      "post": {
+    "/api/blogs/{slug}": {
+      "get": {
         "tags": [
-          "expertAvailability"
+          "blogs"
         ],
-        "parameters": [],
-        "operationId": "expertAvailability.remove",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "blogs.getBySlug",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "thumbnail": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "categories": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "authorId": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "published": {
+                      "type": "boolean"
+                    },
+                    "author": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "email"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    },
+                    "thumbnailAlt": {
+                      "type": "string"
+                    },
+                    "focusKeyphrase": {
+                      "type": "string"
+                    },
+                    "country": {
+                      "type": "string"
+                    },
+                    "state": {
+                      "type": "string"
+                    },
+                    "jsonLdSchema": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "thumbnail",
+                    "description",
+                    "categories",
+                    "slug",
+                    "content",
+                    "authorId",
+                    "id",
+                    "published",
+                    "author",
+                    "createdAt",
+                    "updatedAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "blogs"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "blogs.update",
         "requestBody": {
           "description": "Body",
           "content": {
@@ -6094,34 +5865,170 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "mode": {
-                    "type": "string",
-                    "enum": [
-                      "ONLINE",
-                      "OFFLINE"
-                    ]
-                  },
-                  "from": {
-                    "type": "string",
-                    "format": "date-time",
-                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
-                  },
-                  "to": {
-                    "type": "string",
-                    "format": "date-time",
-                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z|([+-](?:[01]\\d|2[0-3]):[0-5]\\d)))$"
-                  },
-                  "roomId": {
+                  "title": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "thumbnail": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "thumbnailAlt": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string",
+                    "minLength": 100,
+                    "maxLength": 200
+                  },
+                  "focusKeyphrase": {
+                    "type": "string"
+                  },
+                  "categories": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "country": {
+                    "type": "string"
+                  },
+                  "state": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[a-z0-9-_]+$"
+                  },
+                  "content": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "authorId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "jsonLdSchema": {
+                    "type": "string"
                   }
                 },
                 "required": [
-                  "from",
-                  "to"
+                  "title",
+                  "thumbnail",
+                  "description",
+                  "categories",
+                  "slug",
+                  "content",
+                  "authorId"
                 ],
                 "additionalProperties": false
               }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "blogs"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "blogs.delete",
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blogs/{slug}/publish": {
+      "patch": {
+        "tags": [
+          "blogs"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "blogs.publish",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "nullable": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/blogs/{slug}/unpublish": {
+      "patch": {
+        "tags": [
+          "blogs"
+        ],
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "operationId": "blogs.unpublish",
+        "requestBody": {
+          "description": "Body",
+          "content": {
+            "application/json": {
+              "schema": {}
             }
           }
         },
